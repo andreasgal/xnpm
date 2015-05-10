@@ -1,0 +1,22 @@
+#!/bin/sh
+prefix=${xnpm_toolchain_prefix}
+tool=`basename $0`
+bin=${prefix}${tool}
+
+args="-DANDROID -shared"
+while (( "$#" )); do
+  if [[ "$1" == "-mmacosx-version-min=10.5" ]]; then
+    true
+  elif [[ "$1" == "-arch" ]]; then
+    true
+  elif [[ "$1" == "x86_64" ]]; then
+    true
+  elif [[ "$1" == "-gdwarf-2" ]]; then
+    true
+  else
+    args="$args $1"
+  fi
+  shift
+done
+
+`${bin} $args`

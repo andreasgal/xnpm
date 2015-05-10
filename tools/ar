@@ -1,0 +1,4 @@
+#!/bin/sh
+prefix=${xnpm_toolchain_prefix}
+tool=`basename $0`
+`${prefix}${tool}`

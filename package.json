@@ -1,0 +1,28 @@
+{
+  "name": "xnpm",
+  "version": "0.0.1",
+  "description": "Wrapper for npm to cross compile for Android.",
+  "keywords": [
+    "android",
+    "npm"
+  ],
+  "author": {
+    "name": "Andreas Gal",
+    "email": "andreas.gal@gmail.com"
+  },
+  "bin": {
+    "xnpm": "./bin/xnpm"
+  },
+  "files": {
+    "tools": "./tools",
+    "tools": "./tools"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreasgal/xnpm.git"
+  },
+  "license": "BSD",
+  "dependencies": {
+    "npm": "^2.9.1"
+  }
+}

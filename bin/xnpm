@@ -1,0 +1,53 @@
+#!/bin/sh
+':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
+
+var path = require('path');
+var exec = require('child_process').exec;
+
+// Get path to the executable (this file)
+var self = path.normalize(process.argv[1]);
+
+// Get tool directory
+var tool_dir = self.split(path.sep);
+tool_dir.pop();
+tool_dir.pop();
+tool_dir.push('tools');
+tool_dir = tool_dir.join(path.sep);
+
+// Update the path
+var PATH = process.env.PATH.split(path.delimiter);
+PATH.unshift(tool_dir);
+process.env.PATH = PATH.join(path.delimiter);
+
+// Re-assemble the arguments
+var args = process.argv;
+args.shift();
+args.shift();
+args.unshift(tool_dir + '/../node_modules/.bin/npm');
+
+// Check whether we should use a toolchain
+args = args.filter(function (value, idx, array) {
+  if (value.indexOf('--toolkit-prefix=') == 0) {
+    var dir = value.substr(17);
+    dir = dir.replace('~', process.env.HOME);
+    process.env['xnpm_toolchain_prefix'] = path.normalize(dir);
+    process.env['CC'] = tool_dir + path.sep + 'gcc';
+    process.env['CXX'] = tool_dir + path.sep + 'g++';
+    process.env['AR'] = tool_dir + path.sep + 'ar';
+    process.env['RANLIB'] = tool_dir + path.sep + 'ranlib';
+    process.env['LINK'] = tool_dir + path.sep + 'g++';
+    return false;
+  }
+  return true;
+});
+
+function sh(cmd) {
+  exec(cmd, {
+    env: process.env,
+  }, function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+}
+
+sh(args.join(' '));

@@ -19,4 +19,4 @@ while (( "$#" )); do
   shift
 done
 
-`${bin} $args`
+`${bin} $args $@`
